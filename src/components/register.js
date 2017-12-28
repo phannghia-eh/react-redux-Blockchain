@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import Config from '../config';
-import $ from 'jquery';
+import  $ from "jquery";
 
 class Register extends Component{
+
 
     register() {
         if (this.refs.email.value === "" || this.refs.newpassword.value === "" || this.refs.confirmpassword.value === "") {
@@ -25,6 +26,7 @@ class Register extends Component{
 
         };
 
+
         $.post(urlAuth, data, function (resauth) {
             console.log(data);
             if (resauth.success === 1) {
@@ -45,6 +47,7 @@ class Register extends Component{
     render() {
         return(
             <div className="container">
+                <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
                 <div className="row">
                     <div className="col-md-12 ">
 

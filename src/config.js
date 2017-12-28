@@ -1,6 +1,6 @@
 let config = {
-    url_auth: 'https://localhost:3000/auth/',
-    url_api: 'https://localhost:3000/api/',
+    url_auth: 'http://localhost:3000/auth/',
+    url_api: 'http://localhost:3000/api/',
 };
 
 module.exports = config;
