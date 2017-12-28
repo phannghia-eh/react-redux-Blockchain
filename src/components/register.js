@@ -8,33 +8,42 @@ class Register extends Component{
 
     register() {
         if (this.refs.email.value === "" || this.refs.newpassword.value === "" || this.refs.confirmpassword.value === "") {
-            alert("Không được có giá trị rỗng");
+            alert("Cannot empty");
             return;
         }
 
         if (this.refs.newpassword.value !== this.refs.confirmpassword.value) {
-            alert("Password khác nhau");
+            alert("Password different");
+            return;
+        }
+
+        if(this.refs.email.value.indexOf("@")<1){
+            alert("Please include an @ in the email address");
             return;
         }
 
         let urlAuth = Config.url_auth + "register";
-
         let data = {
-            username: this.refs.email.value,
+            email: this.refs.email.value,
             password: this.refs.newpassword.value,
 
 
         };
-
-
-        $.post(urlAuth, data, function (resauth) {
-            console.log(data);
-            if (resauth.success === 1) {
+        $.post(urlAuth, data, function (resauth,err) {
+            if (resauth.success === true) {
                 // window.location.assign("/");
-                alert("Please check mail!");
+                alert(resauth.message);
+                document.getElementById('email').value='' ;
+                document.getElementById('newpassword').value='' ;
+                document.getElementById('confirmpassword').value='' ;
+
             }
             else {
-                alert("Register Error");
+                alert(resauth.message);
+                document.getElementById('newpassword').value='' ;
+                document.getElementById('confirmpassword').value='' ;
+
+
             }
 
         })
@@ -67,15 +76,15 @@ class Register extends Component{
                                 <div className="form-signin-header-border"/>
                                 <div className="form-group">
                                     <label className="lable-email">Email</label>
-                                    <input type="text" className="form-control" ref="email" placeholder="Email" required="" />
+                                    <input type="text" className="form-control"  id="email" ref="email" placeholder="Email" required="" />
                                 </div>
                                 <div className="form-group">
                                     <label >New Password</label>
-                                    <input type="password" className="form-control" ref="newpassword"  placeholder="New Password" required=""/>
+                                    <input type="password" className="form-control" id="newpassword" ref="newpassword"  placeholder="New Password" required=""/>
                                 </div>
                                 <div className="form-group">
                                     <label >Confirm Password</label>
-                                    <input type="password" className="form-control" ref="confirmpassword"  placeholder="Confirm Password" required=""/>
+                                    <input type="password" className="form-control" id="confirmpassword"  ref="confirmpassword"  placeholder="Confirm Password" required=""/>
                                 </div>
                                 <button className="btn btn-lg btn-success btn-block" type="button" onClick={() => this.register()}>Register</button>
                             </form>
