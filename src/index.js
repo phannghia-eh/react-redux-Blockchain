@@ -23,8 +23,6 @@ ReactDOM.render(
                 <div >
                     <Header/>
                     <Router/>
-
-
                 </div>
             </BrowserRouter>
         </div>

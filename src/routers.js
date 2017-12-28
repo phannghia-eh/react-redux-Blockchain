@@ -9,14 +9,14 @@ import {connect} from 'react-redux'
 
 class Router extends Component {
     render() {
-        const user = this.props.user;
+
         return (
             <main>
                 <Switch>
                     <Route exact path='/' render={(props) => <Home  />}/>
                     <Route path='/login' render={(props) => <Login  />}/>
                     <Route exact path='/register' render={(props) => <Register {...props} />}/>
-                       </Switch>
+               </Switch>
             </main>
         )
     }

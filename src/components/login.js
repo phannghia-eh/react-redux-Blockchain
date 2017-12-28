@@ -4,11 +4,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Login extends Component{
 
+
+
+    l
+
+
+
+
+
     render() {
         return(
             <div className="container">
                 <div className="row">
-                    <div class="col-md-12 ">
+                    <div className="col-md-12 ">
 
                         <div className = "col-md-3"></div>
                         <div className = "col-md-6">
