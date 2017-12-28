@@ -6,8 +6,8 @@ import { BrowserRouter } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import Router from './routers';
+import reducer from './redux/reducers/reducers';
 import Header from './components/header';
-import reducer from  './redux/reducers/reducers';
 
 const store = createStore(reducer, compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f

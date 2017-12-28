@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import  UtilsUser from '../redux/Utils/utils_user'
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 class Header extends  Component{
 
 
+    constructor(props) {
+        super(props);
+        UtilsUser.updateuser(this.props.dispatch);
+
+    }
+
+
+    logOut() {
+        cookies.remove('token');
+        UtilsUser.updateuser(this.props.dispatch);
+    }
+
     render() {
         var showbutton;
-        if (!this.props.user) {
+        if (!this.props.user_email) {
             showbutton = (
                 <ul className="nav navbar-nav navbar-right">
                     <li><a href="/login">Login</a></li>
@@ -17,7 +32,7 @@ class Header extends  Component{
 
             showbutton = (
                 <ul className="nav navbar-nav navbar-right">
-                    <li><a>{this.props.user.user_name}</a></li>
+                    <li><a>{this.props.user_email}</a></li>
                     <li><a href="/" onClick={this.logOut}>Log out</a></li>
                 </ul>
             )

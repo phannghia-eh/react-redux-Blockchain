@@ -1,13 +1,55 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import Config from '../config';
+import  $ from "jquery";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
+
 
 class Login extends Component{
 
 
+    constructor(props) {
+        super(props);
 
-    l
+    }
 
+    login() {
+        if (this.refs.email.value === "" || this.refs.password.value === "") {
+            alert("Cannot empty");
+            return;
+        }
+
+
+        if(this.refs.email.value.indexOf("@")<1){
+            alert("Please include an @ in the email address");
+            return;
+        }
+
+        let urlAuth = Config.url_auth + "login";
+        let data = {
+            email: this.refs.email.value,
+            password: this.refs.password.value,
+
+
+        };
+        $.post(urlAuth, data, function (res,err) {
+
+            if (res.success === true) {
+                cookies.set('token', res.token, { path: '/' });
+
+                window.location.assign("/");
+            }
+            else {
+                alert(res.message);
+
+
+            }
+
+        })
+
+    }
 
 
 
@@ -35,7 +77,7 @@ class Login extends Component{
                                 <div className="form-signin-header-border"/>
                                 <div className="form-group">
                                     <label className="lable-email">Email</label>
-                                    <input type="text" className="form-control" ref="email" placeholder="Email Address" required="" />
+                                    <input type="text" className="form-control"  id="email" ref="email" placeholder="Email" required="" />
                                 </div>
                                 <div className="form-group">
                                     <label>Password</label>
@@ -49,7 +91,6 @@ class Login extends Component{
                     </div>
                 </div>
             </div>
-
 
         )
     }
