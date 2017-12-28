@@ -41,6 +41,7 @@ class Login extends Component{
                                     <label>Password</label>
                                     <input type="password" className="form-control" ref="password" placeholder="Password" required=""/>
                                 </div>
+                                <a href="/forgotpassword">Forgot Password</a>
                                 <button className="btn btn-lg btn-success btn-block" type="button" onClick={() => this.login()}>Login</button>
                             </form>
                         </div>
