@@ -23,8 +23,8 @@ class Dashboard extends Component{
                         </div>
                         <div className="col-md-4">
                             <div className="title2">
-                                <p>Actual Balance: {this.props.actual_balance}</p>
-                                <p>Real Balance: {this.props.real_balance}</p>
+                                <p>Actual Balance: {this.props.actual_balance} KC</p>
+                                <p>Real Balance: {this.props.real_balance} KC</p>
                             </div>
                         </div>
                     </div>

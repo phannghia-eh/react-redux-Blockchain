@@ -8,6 +8,7 @@ class Header extends Component{
     constructor(props) {
         super(props);
         UtilsUser.updateuser(this.props.dispatch);
+        UtilsUser.updatemoney(this.props.dispatch);
     }
 
     logOut() {

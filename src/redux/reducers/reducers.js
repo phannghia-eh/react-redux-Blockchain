@@ -23,6 +23,16 @@ export default (state = default_state, action) => {
                 real_balance: user.real_balance,
                 actual_balance: user.actual_balance
             };
+        case 'UPDATE_MONEY':
+            let money = action.action.money;
+            if(!money) {
+                return {...state};
+            }
+
+            return {...state,
+                real_balance: money.real_balance,
+                actual_balance: money.actual_balance
+            };
         default:
             return state
     }
