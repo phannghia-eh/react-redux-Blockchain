@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
-import Home from './components/home'
 import Login from './components/login'
 import Register from './components/register'
 import ForgotPassword from './components/fogetpassword'
+import App from  './containers/App'
 
 
 import {connect} from 'react-redux'
@@ -14,7 +14,7 @@ class Router extends Component {
         return (
             <main>
                 <Switch>
-                    <Route exact path='/' render={(props) => <Home  />}/>
+                    <Route exact path='/' render={(props) => <App/>}/>
                     <Route path='/login' render={(props) => <Login  />}/>
                     <Route exact path='/register' render={(props) => <Register />}/>
                     <Route exact path='/forgotpassword' render={(props) => <ForgotPassword />}/>

@@ -2,15 +2,25 @@
 
 
 html, body {
-  background: #27ae60 !important;
-  font-family: 'Helvetica', sans-serif !important;
-  position: relative;
-  font-size: small;
-  font-weight: 300;
-  color: #5f5f5f;
-  height: 100%;
-  width: 100%;
+    background: #FFFFFF !important;
+    font-family: 'Helvetica', sans-serif !important;
+    position: relative;
+    font-size: small;
+    font-weight: 300;
+    color: #5f5f5f;
+    height: 100%;
+    width: 100%;
+
 }
+
+h1, h2, h3, h4, h5, h6
+{
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #7f8c8d;
+}
+
 
 
 .bg_dark {
@@ -22,8 +32,9 @@ html, body {
   max-width: 450px;
   padding: 15px 35px 45px;
   margin: 0 auto;
+  margin-top: 100px;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(231, 76, 60,0.5);
 }
 
 .form-signin-header-title{
@@ -36,7 +47,7 @@ html, body {
   font-size: 16px;
 }
 .form-signin-header-border {
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #e74c3c;
 }
 
 form-signin-header-right{
@@ -66,3 +77,120 @@ input[type="password"] {
 
 
 }
+
+
+
+
+.navbar-custom {
+  background-color: #e74c3c;
+}
+/* change the brand and text color */
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+  color:  #FFFFFF;
+}
+/* change the link color */
+.navbar-custom .navbar-nav .nav-link {
+  color:  #e74c3c;
+}
+/* change the color of active or hovered links */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+  color:  #e74c3c;
+}
+
+.navbar-custom .navbar-nav > li > a:focus { color: #fff; background-color: #e74c3c; }
+
+.navbar-custom .navbar-nav > li > a:hover { color: #bdc3c7; background-color: #e74c3c; }
+
+.navbar-custom .navbar-nav > li > a { color: #fff; background-color: #e74c3c; }
+
+
+
+
+
+.sidenav {
+    top: 51px;
+    height: 100%;
+    width: 270px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    background-color: #f5f7f9;
+    overflow-x: hidden;
+    padding: 20px 15px 15px 15px;
+    border-right: 1px solid #DDD;
+}
+
+.sidenav >ul > li > a {
+    padding: 6px 0px 6px 0px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 400;
+    color: #818181;
+    display: block;
+}
+
+
+.sidenav >ul > li > a:hover  {
+    padding: 6px 0px 6px 0px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 400;
+    color: #818181;
+    display: block;
+    background-color:#f5f7f9;
+}
+
+.border-soild{
+    margin-bottom: 15px;
+    border-bottom: 1px solid grey;
+    margin-top: 15px;
+}
+
+
+
+.main {
+
+    margin-left: 270px; /* Same as the width of the sidenav */
+    padding: 51px 0px 0px 10px;
+    top: 51px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a { font-size: 1em;
+        font-weight: 400;}
+}
+
+
+.top-view {
+    background: white;
+    border-bottom: 1px solid #DDD;
+    padding: 0px 0px 0px 30px;
+    height: 115px;
+    color: #7f8c8d;
+}
+
+
+.title1{
+    margin-top: 15px;
+    color: #7f8c8d;
+    font-weight: 200;
+    font-size: 28px;
+}
+
+.title2{
+    margin-top: 15px;
+    color: #7f8c8d;
+    font-weight: 200;
+    font-size: 20px;
+}
+
+.button-custom{
+    margin-right: 0.625em;
+    min-width: 100px;
+}
+
+
+

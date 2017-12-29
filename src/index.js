@@ -7,7 +7,9 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import Router from './routers';
 import reducer from './redux/reducers/reducers';
-import Header from './components/header';
+import Header from './components/Header/Header';
+
+
 
 const store = createStore(reducer, compose(
     window.devToolsExtension ? window.devToolsExtension() : f => f
@@ -16,7 +18,7 @@ const store = createStore(reducer, compose(
 ReactDOM.render(
 
     <Provider store={store}>
-        <div>
+        <div className = "app">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
             <script src="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js"></script>
             <BrowserRouter>

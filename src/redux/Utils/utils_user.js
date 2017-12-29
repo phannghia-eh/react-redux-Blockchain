@@ -19,6 +19,10 @@ const  updateuser = function (dispatch) {
     let user = {
         user_email: decoded.data.email,
         user_id: decoded.data._id,
+        address: decoded.data.address,
+        actual_balance: decoded.data.actual_balance,
+        real_balance: decoded.data.real_balance,
+
     };
 
     if(user.user_email){

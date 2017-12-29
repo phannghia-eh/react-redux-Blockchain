@@ -10,11 +10,6 @@ const cookies = new Cookies();
 class Login extends Component{
 
 
-    constructor(props) {
-        super(props);
-
-    }
-
     login() {
         if (this.refs.email.value === "" || this.refs.password.value === "") {
             alert("Cannot empty");
