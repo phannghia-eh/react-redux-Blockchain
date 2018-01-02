@@ -5,6 +5,8 @@ import Sidebar from '../components/Sidebar/Sidebar';
 import Timestamp from 'react-timestamp';
 import Cookies from 'universal-cookie';
 import  axios from 'axios';
+import './Dashboard.css'
+
 const cookies = new Cookies();
 var ReactDOM = require('react-dom');
 var ReactBsTable  = require('react-bootstrap-table');
@@ -108,20 +110,24 @@ class Dashboard extends Component{
         return this.props.transactions.map((transaction, index) => {
             let type = transaction.dst_addr === currentArr ? 'in' : 'out';
             return (
-                <div key={'transaction-' + index} className="transaction-item">
-                    <div className="col-sm-3">
-                        <Timestamp className="date" time={transaction.created_at} precision={2} />
+                <div key={'transaction-' + index} className="transaction-item text-center">
+
+
+                    <div className="col-sm-2">
+                        <Timestamp className="date" time={transaction.created_at}/>
                         <div className="icon">
                             <span className={type === 'in' ? 'glyphicon glyphicon-circle-arrow-down' : 'glyphicon glyphicon-circle-arrow-up'}></span>
                         </div>
                     </div>
-                    <div className="col-sm-7">
-                        <div className="amount">{transaction.amount}</div>
-                        <div className="address">
-                            {type === 'in' ? ('from ' + (transaction.src_address ? transaction.src_address : 'Blockchain')) : ('to ' + transaction.dst_address)}
+                    <div className="col-sm-8">
+                        <div class="row">
+                            <div className="amount col-sm-4">{transaction.amount}</div>
+                            <div className="address col-sm-8">
+                                {type === 'in' ? ('from ' + (transaction.src_address ? transaction.src_address : 'Blockchain')) : (transaction.dst_address)}
+                            </div>
                         </div>
                     </div>
-                    <div className="col-sm-2 text-right">
+                    <div className="col-sm-2 text-center">
                         <div className="status">{transaction.status}</div>
                         {transaction.status === 'init' ? this.renderActions(transaction._id) : null}
                     </div>
@@ -155,7 +161,15 @@ class Dashboard extends Component{
                 </div>
 
                 <div>
-                    <div className="Transactions col-sm-offset-1 col-sm-10">
+                    <div className="Transactions col-sm-12">
+                        <div className="header col-sm-12">
+                            <div className="col-sm-2 text-center">Thời gian</div>
+                            <div className="col-sm-8">
+                                <div className="col-sm-4 text-center">Số tiền</div>
+                                <div className="col-sm-8 text-center">Người nhận</div>
+                            </div>
+                            <div className="col-sm-2 text-center">Trạng thái</div>
+                        </div>
                         {this.renderTransactionList()}
                     </div>
 
