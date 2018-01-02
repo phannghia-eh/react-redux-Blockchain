@@ -5,6 +5,7 @@ let default_state = {
     address: null,
     real_balance: null,
     actual_balance: null,
+    transactions:[]
 };
 
 
@@ -23,15 +24,15 @@ export default (state = default_state, action) => {
                 real_balance: user.real_balance,
                 actual_balance: user.actual_balance
             };
-        case 'UPDATE_MONEY':
-            let money = action.action.money;
-            if(!money) {
+        case 'UPDATE_MONEY_TRANSACTION':
+            let money_transaction = action.action.money_transaction;
+            if(!money_transaction) {
                 return {...state};
             }
-
             return {...state,
-                real_balance: money.real_balance,
-                actual_balance: money.actual_balance
+                real_balance: money_transaction.real_balance,
+                actual_balance: money_transaction.actual_balance,
+                transactions: money_transaction.transactions
             };
         default:
             return state

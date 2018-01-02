@@ -3,10 +3,10 @@ const UpdateUser = (user) => ({
     type: 'UPDATE_USER',
     action: {user},
 });
-const UpdateMoney = (money) => ({
-    type: 'UPDATE_MONEY',
-    action: {money},
+const UpdateMoneyAndTransaction = (money_transaction) => ({
+    type: 'UPDATE_MONEY_TRANSACTION',
+    action: {money_transaction},
 });
 
 
-export default {UpdateUser,UpdateMoney}
+export default {UpdateUser,UpdateMoneyAndTransaction}

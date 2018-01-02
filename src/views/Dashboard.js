@@ -1,23 +1,147 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import {Modal,ButtonGroup, Button} from 'react-bootstrap'
 import Sidebar from '../components/Sidebar/Sidebar';
-
+import Timestamp from 'react-timestamp';
+import Cookies from 'universal-cookie';
+import  axios from 'axios';
+const cookies = new Cookies();
+var ReactDOM = require('react-dom');
+var ReactBsTable  = require('react-bootstrap-table');
+var BootstrapTable = ReactBsTable.BootstrapTable;
+var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
+var config = require('../config')
 
 
 class Dashboard extends Component{
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showModalGui: false,
+            showModalNhan: false,
+        };
+
+    }
+
+
+    closeGui() {
+        this.setState({showModalGui: false});
+    }
+
+    openGui() {
+        this.setState({showModalGui: true});
+    }
+    closeNhan() {
+        this.setState({showModalNhan: false});
+    }
+
+    openNhan() {
+        this.setState({showModalNhan: true});
+    }
+
+
+
+    submitGui(){
+        let dstAddress = this.refs.dest_wallet.value;
+        let amount     = this.refs.amount.value;
+        if (!dstAddress || !amount) {
+            alert("Please enter info")
+            return
+        }
+
+        let urlApi  = config.url_api + 'transaction';
+        let data = {
+            src_address: this.props.address,
+            dst_address: dstAddress,
+            amount
+        };
+        var token = cookies.get('token');
+
+        axios.defaults.headers.common['x-access-token'] = token;
+        console.log(token)
+        console.log(urlApi)
+        console.log(data)
+        axios.post(urlApi,data).then(res => {
+            console.log(res)
+            this.closeGui()
+
+
+            /*if(res.data.success === true){
+                let money_transaction = {
+                    real_balance: res.data.data.realBalance,
+                    actual_balance: res.data.data.actualBalance,
+                    transactions: res.data.data.transactions
+                };
+                dispatch(ActionUser.UpdateMoneyAndTransaction(money_transaction));
+                return
+            }else{
+                return
+            }*/
+        }).catch((error) => {
+            console.log('error: ' + error);
+        });
+
+
+    }
+
+
+
+
+    renderActions(transactionId) {
+        return (
+            <div>
+                <ButtonGroup className="actions">
+                    <button className="actionbtn" title="Re-send confirmation email"><span className="glyphicon glyphicon-envelope"></span></button>
+                    <button className="actionbtn" title="Confirm transaction" ><span className="glyphicon glyphicon-check"></span></button>
+                    <button className="actionbtn" title="Delete transaction"><span className="glyphicon glyphicon glyphicon-trash"></span></button>
+                </ButtonGroup>
+            </div>
+        );
+    }
+
+
+    renderTransactionList() {
+        let currentArr = this.props.address;
+
+        return this.props.transactions.map((transaction, index) => {
+            let type = transaction.dst_addr === currentArr ? 'in' : 'out';
+            return (
+                <div key={'transaction-' + index} className="transaction-item">
+                    <div className="col-sm-3">
+                        <Timestamp className="date" time={transaction.created_at} precision={2} />
+                        <div className="icon">
+                            <span className={type === 'in' ? 'glyphicon glyphicon-circle-arrow-down' : 'glyphicon glyphicon-circle-arrow-up'}></span>
+                        </div>
+                    </div>
+                    <div className="col-sm-7">
+                        <div className="amount">{transaction.amount}</div>
+                        <div className="address">
+                            {type === 'in' ? ('from ' + (transaction.src_address ? transaction.src_address : 'Blockchain')) : ('to ' + transaction.dst_address)}
+                        </div>
+                    </div>
+                    <div className="col-sm-2 text-right">
+                        <div className="status">{transaction.status}</div>
+                        {transaction.status === 'init' ? this.renderActions(transaction._id) : null}
+                    </div>
+                </div>
+            )
+        });
+    }
+
     render() {
 
-            return(
+        return(
             <div className="main">
                 <div className="top-view">
                     <div className="row">
                         <div className="col-md-8">
                             <div className="title1">BE YOUR OWN BANK</div>
-                            <a href="/" className="btn btn-default btn-md button-custom">
+                            <a onClick={() => this.openGui()} className="btn btn-default btn-md button-custom">
                                 <span className="glyphicon glyphicon-open"></span> Gửi
                             </a>
-                            <a href="/" className="btn btn-default btn-md button-custom">
+                            <a  onClick={() => this.openNhan()}  className="btn btn-default btn-md button-custom">
                                 <span class="glyphicon glyphicon-save"></span> Nhận
                             </a>
                         </div>
@@ -30,14 +154,88 @@ class Dashboard extends Component{
                     </div>
                 </div>
 
-                <p>
-                    Hien thong tin chung
-                </p>
+                <div>
+                    <div className="Transactions col-sm-offset-1 col-sm-10">
+                        {this.renderTransactionList()}
+                    </div>
 
-             </div>
+                </div>
 
 
-            )
+                <Modal show={this.state.showModalGui} onHide={() => this.closeGui()}>
+                    <Modal.Header >
+                        <Modal.Title><span className="glyphicon glyphicon-open"></span> Gửi</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="container">
+                            <form className="form-horizontal">
+                                <div className="form-group">
+                                    <label className="control-label col-sm-2" >Đến</label>
+                                    <div className="col-sm-3">
+                                        <input type="text" className="form-control" ref="dest_wallet" id="dest_wallet" placeholder="Select a destination"/>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label col-sm-2" >Số tiền</label>
+                                    <div className="col-sm-3">
+                                        <input type="number" className="form-control" ref="amount" id="amount" placeholder="Amount"/>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label col-sm-2" >Mô tả</label>
+                                    <div className="col-sm-3">
+                                        <input type="textarea" className="form-control" ref="description" id="description" placeholder="Tiền cho thuê"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="button" className="btn btn-default" onClick={() => this.submitGui()}>Submit</button>
+                        <Button onClick={() => this.closeGui()}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={this.state.showModalNhan} onHide={() => this.closeNhan()}>
+                    <Modal.Header >
+                        <Modal.Title><span className="glyphicon glyphicon-save"></span> Nhận</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="container">
+                            <form className="form-horizontal">
+                                <div className="form-group">
+                                    <label className="control-label col-sm-2" >Copy and share address</label>
+                                    <div className="col-sm-3">
+                                        <input type="text" className="form-control" value={this.props.address}/>
+
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label col-sm-2" >Số tiền</label>
+                                    <div className="col-sm-3">
+                                        <input type="number" className="form-control" ref="amount" id="amount" placeholder="Amount"/>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label col-sm-2" >Mô tả</label>
+                                    <div className="col-sm-3">
+                                        <input type="textarea" className="form-control" ref="description" id="description" placeholder="Tiền cho thuê"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <button type="button" className="btn btn-default" onClick={() => this.submit()}>Submit</button>
+                        <Button onClick={() => this.closeNhan()}>Close</Button>
+                    </Modal.Footer>
+                </Modal>
+
+
+            </div>
+
+
+        )
         }
 
 }
@@ -47,3 +245,4 @@ Dashboard = connect(function (state) {
 })(Dashboard);
 
 export default Dashboard;
+

@@ -37,7 +37,7 @@ const  updateuser = function (dispatch) {
     }
 };
 
-const  updatemoney = function (dispatch) {
+const  updatemoneyandtransaction = function (dispatch) {
 
     var token = cookies.get('token');
 
@@ -46,26 +46,31 @@ const  updatemoney = function (dispatch) {
         //dispatch(ActionUser.UpdateUser(null));
         return
     }
+    var decoded = jwt_decode(token);
 
-console.log(token)
-    let urlApi = Config.url_api + "wallet";
+    let user = {
+
+        address: decoded.data.address,
+    };
+    let urlApi = Config.url_api + "dashboard/"+decoded.data.address;
 
     axios.defaults.headers.common['x-access-token'] = token;
 
     axios.get(urlApi).then(res => {
-        console.log(res.data)
+
         if(res.data.success === true){
-            let money = {
-                real_balance: res.data.realBalance,
-                actual_balance: res.data.actualBalance,
+            let money_transaction = {
+                real_balance: res.data.data.realBalance,
+                actual_balance: res.data.data.actualBalance,
+                transactions: res.data.data.transactions
             };
-            dispatch(ActionUser.UpdateMoney(money));
+            dispatch(ActionUser.UpdateMoneyAndTransaction(money_transaction));
             return
         }else{
             return
         }
     }).catch((error) => {
-            console.log('error 3 ' + error);
+            console.log('error: ' + error);
     });
 
 
@@ -74,5 +79,5 @@ console.log(token)
 
 export default {
     updateuser,
-    updatemoney
+    updatemoneyandtransaction
 }
