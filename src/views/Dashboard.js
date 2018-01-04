@@ -6,6 +6,7 @@ import Timestamp from 'react-timestamp';
 import Cookies from 'universal-cookie';
 import  axios from 'axios';
 import './Dashboard.css'
+import  UtilsUser from '../redux/Utils/utils_user'
 
 const cookies = new Cookies();
 var ReactDOM = require('react-dom');
@@ -28,6 +29,8 @@ class Dashboard extends Component{
     }
 
 
+
+
     closeGui() {
         this.setState({showModalGui: false});
     }
@@ -43,6 +46,23 @@ class Dashboard extends Component{
         this.setState({showModalNhan: true});
     }
 
+
+
+    deleteTransaction(transactionId) {
+        let urlApi  = config.url_api + 'transaction/'+transactionId;
+
+        var token = cookies.get('token');
+
+        axios.defaults.headers.common['x-access-token'] = token;
+
+        axios.get(urlApi).then(res => {
+            console.log(res)
+            UtilsUser.updatemoneyandtransaction(this.props.dispatch);
+        }).catch((error) => {
+            console.log('error: ' + error);
+        });
+
+    }
 
 
     submitGui(){
@@ -62,13 +82,10 @@ class Dashboard extends Component{
         var token = cookies.get('token');
 
         axios.defaults.headers.common['x-access-token'] = token;
-        console.log(token)
-        console.log(urlApi)
-        console.log(data)
         axios.post(urlApi,data).then(res => {
             console.log(res)
             this.closeGui()
-
+            UtilsUser.updatemoneyandtransaction(this.props.dispatch);
 
             /*if(res.data.success === true){
                 let money_transaction = {
@@ -95,9 +112,7 @@ class Dashboard extends Component{
         return (
             <div>
                 <ButtonGroup className="actions">
-                    <button className="actionbtn" title="Re-send confirmation email"><span className="glyphicon glyphicon-envelope"></span></button>
-                    <button className="actionbtn" title="Confirm transaction" ><span className="glyphicon glyphicon-check"></span></button>
-                    <button className="actionbtn" title="Delete transaction"><span className="glyphicon glyphicon glyphicon-trash"></span></button>
+                    <button className="actionbtn" title="Delete transaction" onClick={() => this.deleteTransaction(transactionId)}><span className="glyphicon glyphicon glyphicon-trash"></span></button>
                 </ButtonGroup>
             </div>
         );
@@ -108,30 +123,36 @@ class Dashboard extends Component{
         let currentArr = this.props.address;
 
         return this.props.transactions.map((transaction, index) => {
-            let type = transaction.dst_addr === currentArr ? 'in' : 'out';
+            let type = transaction.dst_address === currentArr ? 'in' : 'out';
             return (
-                <div key={'transaction-' + index} className="transaction-item text-center">
+                <div key={'transaction-' + index} className={index%2 === 0 ?("transaction-item2 col-sm-12 text-center"):("transaction-item1 col-sm-12 text-center")}>
 
-
-                    <div className="col-sm-2">
-                        <Timestamp className="date" time={transaction.created_at}/>
-                        <div className="icon">
-                            <span className={type === 'in' ? 'glyphicon glyphicon-circle-arrow-down' : 'glyphicon glyphicon-circle-arrow-up'}></span>
-                        </div>
-                    </div>
-                    <div className="col-sm-8">
-                        <div class="row">
-                            <div className="amount col-sm-4">{transaction.amount}</div>
-                            <div className="address col-sm-8">
-                                {type === 'in' ? ('from ' + (transaction.src_address ? transaction.src_address : 'Blockchain')) : (transaction.dst_address)}
+                    <div className="row">
+                        <div className="col-sm-2 text-center">
+                            <Timestamp className="date" time={transaction.created_at}/>
+                            <div className="icon">
+                                {type === 'in' ? ("Recieved") : ("Send")}
                             </div>
                         </div>
+                        <div className="col-sm-8 ">
+                            <div class="row">
+                                <div className="col-sm-4 text-center">{transaction.amount} KCoin</div>
+                                <div className="col-sm-8 text-center">
+
+                                    <p> {type === 'out' ? ('From: My KCoin Wallet') : ("From: "+ (transaction.src_address === "" ? ("Outlet"):(transaction.src_address)) )}</p>
+                                    <p> {type === 'out' ? ('To: '+transaction.dst_address) : ("To: My Kcoin Wallet")}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-sm-2 text-center">
+                            <div className="status">{transaction.status}</div>
+                            {transaction.status === 'initialization' ? this.renderActions(transaction._id) : null}
+                        </div>
                     </div>
-                    <div className="col-sm-2 text-center">
-                        <div className="status">{transaction.status}</div>
-                        {transaction.status === 'init' ? this.renderActions(transaction._id) : null}
-                    </div>
+                    <div className="border-soild-table"></div>
                 </div>
+
             )
         });
     }
