@@ -1,145 +1,7 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {Modal,ButtonGroup, Button} from 'react-bootstrap'
-import Sidebar from '../components/Sidebar/Sidebar';
-import Timestamp from 'react-timestamp';
-import Cookies from 'universal-cookie';
-import  axios from 'axios';
-import './Dashboard.css'
 
-const cookies = new Cookies();
-var ReactDOM = require('react-dom');
-var ReactBsTable  = require('react-bootstrap-table');
-var BootstrapTable = ReactBsTable.BootstrapTable;
-var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
-var config = require('../config')
-
-
-class Dashboard extends Component{
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            showModalGui: false,
-            showModalNhan: false,
-        };
-
-    }
-
-
-    closeGui() {
-        this.setState({showModalGui: false});
-    }
-
-    openGui() {
-        this.setState({showModalGui: true});
-    }
-    closeNhan() {
-        this.setState({showModalNhan: false});
-    }
-
-    openNhan() {
-        this.setState({showModalNhan: true});
-    }
-
-
-
-    submitGui(){
-        let dstAddress = this.refs.dest_wallet.value;
-        let amount     = this.refs.amount.value;
-        if (!dstAddress || !amount) {
-            alert("Please enter info")
-            return
-        }
-
-        let urlApi  = config.url_api + 'transaction';
-        let data = {
-            src_address: this.props.address,
-            dst_address: dstAddress,
-            amount
-        };
-        var token = cookies.get('token');
-
-        axios.defaults.headers.common['x-access-token'] = token;
-        console.log(token)
-        console.log(urlApi)
-        console.log(data)
-        axios.post(urlApi,data).then(res => {
-            console.log(res)
-            this.closeGui()
-
-
-            /*if(res.data.success === true){
-                let money_transaction = {
-                    real_balance: res.data.data.realBalance,
-                    actual_balance: res.data.data.actualBalance,
-                    transactions: res.data.data.transactions
-                };
-                dispatch(ActionUser.UpdateMoneyAndTransaction(money_transaction));
-                return
-            }else{
-                return
-            }*/
-        }).catch((error) => {
-            console.log('error: ' + error);
-        });
-
-
-    }
-
-
-
-
-    renderActions(transactionId) {
-        return (
-            <div>
-                <ButtonGroup className="actions">
-                    <button className="actionbtn" title="Re-send confirmation email"><span className="glyphicon glyphicon-envelope"></span></button>
-                    <button className="actionbtn" title="Confirm transaction" ><span className="glyphicon glyphicon-check"></span></button>
-                    <button className="actionbtn" title="Delete transaction"><span className="glyphicon glyphicon glyphicon-trash"></span></button>
-                </ButtonGroup>
-            </div>
-        );
-    }
-
-
-    renderTransactionList() {
-        let currentArr = this.props.address;
-
-        return this.props.transactions.map((transaction, index) => {
-            let type = transaction.dst_addr === currentArr ? 'in' : 'out';
-            return (
-
-                <div class="row">
-                    <div key={'transaction-' + index} className="transaction-item text-center">
-
-
-                        <div className="col-sm-2">
-                            <Timestamp className="date" time={transaction.created_at}/>
-                            <div className="icon">
-                                <span className={type === 'in' ? 'glyphicon glyphicon-circle-arrow-down' : 'glyphicon glyphicon-circle-arrow-up'}></span>
-                            </div>
-                        </div>
-                        <div className="col-sm-8">
-                                <div className="amount col-sm-4">{transaction.amount}</div>
-                                <div className="address col-sm-8">
-                                    {type === 'in' ? ('from ' + (transaction.src_address ? transaction.src_address : 'Blockchain')) : (transaction.dst_address)}
-
-                            </div>
-                        </div>
-                        <div className="col-sm-2 text-center">
-                            <div className="status">{transaction.status}</div>
-                            {transaction.status === 'init' ? this.renderActions(transaction._id) : null}
-                        </div>
-                    </div>
-                </div>
-            )
-        });
-    }
-
+class Admin extends Component{
     render() {
-
         return(
             <div className="main">
                 <div className="top-view">
@@ -251,12 +113,10 @@ class Dashboard extends Component{
             </div>
         )
     }
-
 }
 
-Dashboard = connect(function (state) {
+Admin = connect(function (state) {
     return {...state}
-})(Dashboard);
+})(Admin);
 
-export default Dashboard;
-
+export default Admin;

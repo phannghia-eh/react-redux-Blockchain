@@ -3,16 +3,23 @@ import {connect} from 'react-redux'
 import Config from '../config';
 import  $ from "jquery";
 
-class Register extends Component{
-
-
+class ForgotPassword extends Component{
     forgotpassword() {
-
-
+        let forgotPasswordURL = Config.url_auth + "forgot";
+        if(this.refs.email.value === ''){
+            alert("Empty email field!")
+            return;
+        }
+        else {
+            forgotPasswordURL = Config.url_auth + "forgot/" + this.refs.email.value;
+        }
+        $.get(forgotPasswordURL, (res, err) => {
+            if(res.success)
+                alert(res.message)
+            else
+                alert(res.message)
+        })
     }
-
-
-
 
     render() {
         return(
@@ -26,32 +33,27 @@ class Register extends Component{
                             <form className="form-signin">
                                 <div className="row">
                                     <div className = "col-md-8">
-                                        <span className="form-signin-header-title">Recover password</span>
-                                    </div>
-                                    <div className = "col-md-4 text-right">
+                                        <span className="form-signin-header-title">Reset Password</span>
                                     </div>
                                 </div>
-                                <p className="form-signin-header-description ">Recover password by email</p>
+                                <p className="form-signin-header-description ">Fill an email to recieve an re-password email</p>
                                 <div className="form-signin-header-border"/>
                                 <div className="form-group">
                                     <label className="lable-email">Email</label>
                                     <input type="text" className="form-control"  id="email" ref="email" placeholder="Email" required="" />
                                 </div>
-
-                                <button className="btn btn-lg btn-success btn-block" type="button" onClick={() => this.forgotpassword()}>Submit</button>
+                                <button className="btn btn-lg btn-success btn-block" type="button" onClick={() => this.forgotpassword()}>Send Email</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-
-
         );
     }
 }
 
-Register = connect(function (state) {
+ForgotPassword = connect(function (state) {
     return {...state}
-})(Register);
+})(ForgotPassword);
 
-export default Register;
+export default ForgotPassword;
