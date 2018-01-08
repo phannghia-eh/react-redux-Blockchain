@@ -20,6 +20,7 @@ class Dashboard extends Component{
         this.state = {
             showModalGui: false,
             showModalNhan: false,
+            showModalPopup: false,
         };
 
     }
@@ -42,7 +43,13 @@ class Dashboard extends Component{
         this.setState({showModalNhan: true});
     }
 
+    closePopup(){
+        this.setState({showModalPopup:false})
+    }
 
+    openPopup(row){
+        this.setState({showModalPopup:true, row: row})
+    }
 
     deleteTransaction(transactionId) {
         let urlApi  = config.url_api + 'transaction/'+transactionId;
@@ -157,10 +164,18 @@ class Dashboard extends Component{
     }
 
     render() {
-
-        const options = {
-            sizePerPageDropDown: this.renderSizePerPageDropDown
+        console.log(this.state)
+        var options = {
+            sizePerPageDropDown: this.renderSizePerPageDropDown,
+            onRowClick: row => this.openPopup(row)
         };
+
+        let buttonCancel = null;
+        if (typeof this.state.row !== 'undefined')
+            if( this.state.row.status === 'initialization')
+                buttonCancel = <Button onClick={() => {
+                    this.deleteTransaction(this.state.row._id)
+                    this.closePopup()}}>Cancel Transaction</Button>
         return(
             <div className="main">
                 <div className="top-view">
@@ -202,16 +217,49 @@ class Dashboard extends Component{
                             data={ this.props.transactions }
                             options={ options }
                             pagination>
-                            <TableHeaderColumn dataField='created_at' isKey={ true }>Product ID</TableHeaderColumn>
-                            <TableHeaderColumn dataField='src_address'>Product Name</TableHeaderColumn>
-                            <TableHeaderColumn dataField='status'>Product Price</TableHeaderColumn>
+                            <TableHeaderColumn dataField='created_at' isKey={ true }>Create At</TableHeaderColumn>
+                            <TableHeaderColumn dataField='src_address'>Source Address</TableHeaderColumn>
+                            <TableHeaderColumn dataField='amount'>Amount</TableHeaderColumn>
+                            <TableHeaderColumn dataField='status'>Status</TableHeaderColumn>
                         </BootstrapTable>
                     </div>
 
 
                 </div>
 
-
+                <Modal show={this.state.showModalPopup} onHide={() => this.closePopup()}>
+                    <Modal.Header>
+                        <Modal.Title><span ></span>Info</Modal.Title>
+                        <Modal.Body>
+                            <div className="container">
+                                <form className="form-horizontal">
+                                    <div className="form-group">
+                                        <label className="control-label col-sm-2" >Đến</label>
+                                        <div className="col-sm-3">
+                                            <input type="text" disabled='true' className="form-control" value={typeof (this.state.row) !== 'undefined'?this.state.row.dst_address:''}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label col-sm-2" >Số tiền</label>
+                                        <div className="col-sm-3">
+                                            <input type="text" disabled='true' className="form-control" value={typeof (this.state.row) !== 'undefined'?this.state.row.amount:''}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label col-sm-2" >Trạng thái</label>
+                                        <div className="col-sm-3">
+                                            <input type="text" disabled='true' className="form-control" value={typeof (this.state.row) !== 'undefined'?this.state.row.status:''}/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            {buttonCancel}
+                            <Button onClick={()=> this.closePopup()}>Close</Button>
+                        </Modal.Footer>
+                    </Modal.Header>
+                </Modal>
                 <Modal show={this.state.showModalGui} onHide={() => this.closeGui()}>
                     <Modal.Header >
                         <Modal.Title><span className="glyphicon glyphicon-open"></span> Gửi</Modal.Title>
@@ -235,7 +283,7 @@ class Dashboard extends Component{
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button type="button" className="btn btn-default" onClick={() => this.submitGui()}>Submit</button>
+                        <Button type="button" className="btn btn-default" onClick={() => this.submitGui()}>Submit</Button>
                         <Button onClick={() => this.closeGui()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
@@ -254,17 +302,10 @@ class Dashboard extends Component{
 
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    <label className="control-label col-sm-2" >Số tiền</label>
-                                    <div className="col-sm-3">
-                                        <input type="number" className="form-control" ref="amount" id="amount" placeholder="Amount"/>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button type="button" className="btn btn-default" onClick={() => this.submit()}>Submit</button>
                         <Button onClick={() => this.closeNhan()}>Close</Button>
                     </Modal.Footer>
                 </Modal>
