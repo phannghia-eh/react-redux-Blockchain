@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Modal,ButtonGroup, Button} from 'react-bootstrap'
-import Sidebar from '../components/Sidebar/Sidebar';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import Timestamp from 'react-timestamp';
 import Cookies from 'universal-cookie';
 import  axios from 'axios';
 import './Dashboard.css'
-import  UtilsUser from '../redux/Utils/utils_user'
-
+import  UtilsUser from '../../redux/Utils/utils_user'
 const cookies = new Cookies();
-var ReactDOM = require('react-dom');
-var ReactBsTable  = require('react-bootstrap-table');
-var BootstrapTable = ReactBsTable.BootstrapTable;
-var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
-var config = require('../config')
+var config = require('../../config')
 
 
 class Dashboard extends Component{
@@ -86,18 +82,6 @@ class Dashboard extends Component{
             console.log(res)
             this.closeGui()
             UtilsUser.updatemoneyandtransaction(this.props.dispatch);
-
-            /*if(res.data.success === true){
-                let money_transaction = {
-                    real_balance: res.data.data.realBalance,
-                    actual_balance: res.data.data.actualBalance,
-                    transactions: res.data.data.transactions
-                };
-                dispatch(ActionUser.UpdateMoneyAndTransaction(money_transaction));
-                return
-            }else{
-                return
-            }*/
         }).catch((error) => {
             console.log('error: ' + error);
         });
@@ -157,8 +141,26 @@ class Dashboard extends Component{
         });
     }
 
+    renderSizePerPageDropDown = props => {
+        return (
+            <div className='btn-group'>
+                {
+                    [ 10, 25, 30 ].map((n, idx) => {
+                        const isActive = (n === props.currSizePerPage) ? 'active' : null;
+                        return (
+                            <button key={ idx } type='button' className={ `btn btn-info ${isActive}` } onClick={ () => props.changeSizePerPage(n) }>{ n }</button>
+                        );
+                    })
+                }
+            </div>
+        );
+    }
+
     render() {
 
+        const options = {
+            sizePerPageDropDown: this.renderSizePerPageDropDown
+        };
         return(
             <div className="main">
                 <div className="top-view">
@@ -166,33 +168,46 @@ class Dashboard extends Component{
                         <div className="col-md-8">
                             <div className="title1">BE YOUR OWN BANK</div>
                             <a onClick={() => this.openGui()} className="btn btn-default btn-md button-custom">
-                                <span className="glyphicon glyphicon-open"></span> Gửi
+                                <span className="glyphicon glyphicon-open"></span> Sent
                             </a>
                             <a  onClick={() => this.openNhan()}  className="btn btn-default btn-md button-custom">
-                                <span class="glyphicon glyphicon-save"></span> Nhận
+                                <span class="glyphicon glyphicon-save"></span> Request
                             </a>
                         </div>
                         <div className="col-md-4">
-                            <div className="title2">
-                                <p>Actual Balance: {this.props.actual_balance} KC</p>
-                                <p>Real Balance: {this.props.real_balance} KC</p>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="title2">
+                                        <p>Actual Balance</p>
+                                        <p>${this.props.actual_balance}</p>
+
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="title2">
+                                        <p>Real Balance</p>
+                                        <p>$ {this.props.real_balance}</p>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <div className="Transactions col-sm-12">
-                        <div className="header col-sm-12">
-                            <div className="col-sm-2 text-center">Thời gian</div>
-                            <div className="col-sm-8">
-                                <div className="col-sm-4 text-center">Số tiền</div>
-                                <div className="col-sm-8 text-center">Người nhận</div>
-                            </div>
-                            <div className="col-sm-2 text-center">Trạng thái</div>
-                        </div>
-                        {this.renderTransactionList()}
+
+                    <div className="maindashboard ">
+                        <BootstrapTable
+                            data={ this.props.transactions }
+                            options={ options }
+                            pagination>
+                            <TableHeaderColumn dataField='created_at' isKey={ true }>Product ID</TableHeaderColumn>
+                            <TableHeaderColumn dataField='src_address'>Product Name</TableHeaderColumn>
+                            <TableHeaderColumn dataField='status'>Product Price</TableHeaderColumn>
+                        </BootstrapTable>
                     </div>
+
 
                 </div>
 
@@ -214,12 +229,6 @@ class Dashboard extends Component{
                                     <label className="control-label col-sm-2" >Số tiền</label>
                                     <div className="col-sm-3">
                                         <input type="number" className="form-control" ref="amount" id="amount" placeholder="Amount"/>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label className="control-label col-sm-2" >Mô tả</label>
-                                    <div className="col-sm-3">
-                                        <input type="textarea" className="form-control" ref="description" id="description" placeholder="Tiền cho thuê"/>
                                     </div>
                                 </div>
                             </form>
@@ -249,12 +258,6 @@ class Dashboard extends Component{
                                     <label className="control-label col-sm-2" >Số tiền</label>
                                     <div className="col-sm-3">
                                         <input type="number" className="form-control" ref="amount" id="amount" placeholder="Amount"/>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label className="control-label col-sm-2" >Mô tả</label>
-                                    <div className="col-sm-3">
-                                        <input type="textarea" className="form-control" ref="description" id="description" placeholder="Tiền cho thuê"/>
                                     </div>
                                 </div>
                             </form>

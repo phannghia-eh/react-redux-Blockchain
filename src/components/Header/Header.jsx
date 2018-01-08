@@ -9,6 +9,9 @@ class Header extends Component{
         super(props);
         UtilsUser.updateuser(this.props.dispatch);
         UtilsUser.updatemoneyandtransaction(this.props.dispatch);
+        UtilsUser.updatestatisticalparameters(this.props.dispatch)
+        UtilsUser.updatelistofuseraccounts(this.props.dispatch)
+        UtilsUser.updateListsandinformationoftransactions(this.props.dispatch)
     }
 
     logOut() {

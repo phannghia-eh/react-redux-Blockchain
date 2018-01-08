@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import Cookies from 'universal-cookie';
 import Sidebar from '../components/Sidebar/Sidebar';
-import Dashboard from  '../views/Dashboard';
+import Dashboard from  '../views/Dashboard/Dashboard';
 
 
 class App extends Component{

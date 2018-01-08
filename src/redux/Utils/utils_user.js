@@ -25,6 +25,7 @@ const  updateuser = function (dispatch) {
         user_email: decoded.data.email,
         user_id: decoded.data._id,
         address: decoded.data.address,
+        admin : decoded.data.admin,
     };
 
     if(user.user_email){
@@ -77,7 +78,126 @@ const  updatemoneyandtransaction = function (dispatch) {
 }
 
 
+const  updatestatisticalparameters = function (dispatch) {
+
+    var token = cookies.get('token');
+
+    if(!token)
+    {
+        //dispatch(ActionUser.UpdateUser(null));
+        return
+    }
+    var decoded = jwt_decode(token);
+
+    let user = {
+
+        address: decoded.data.address,
+    };
+    let urlApi = Config.url_admin + "balance";
+
+    axios.defaults.headers.common['x-access-token'] = token;
+
+    axios.get(urlApi).then(res => {
+
+
+        if(res.data.success === true){
+            let statisticalparameters = {
+                actual: res.data.actual,
+                real: res.data.real,
+                totalUser: res.data.totalUser
+            };
+            dispatch(ActionUser.UpdateStatisticalparameters(statisticalparameters));
+            return
+        }else{
+            return
+        }
+    }).catch((error) => {
+        console.log('error: ' + error);
+    });
+
+
+}
+
+
+
+const  updatelistofuseraccounts = function (dispatch) {
+
+    var token = cookies.get('token');
+
+    if(!token)
+    {
+        //dispatch(ActionUser.UpdateUser(null));
+        return
+    }
+    var decoded = jwt_decode(token);
+
+    let user = {
+
+        address: decoded.data.address,
+    };
+    let urlApi = Config.url_admin + "account";
+
+    axios.defaults.headers.common['x-access-token'] = token;
+
+    axios.get(urlApi).then(res => {
+        if(res.data.success === true){
+            var tmp = res.data.accounts
+            dispatch(ActionUser.UpdateListofuseraccounts(tmp));
+            return
+        }else{
+            return
+        }
+    }).catch((error) => {
+        console.log('error: ' + error);
+    });
+
+
+}
+
+
+
+const  updateListsandinformationoftransactions = function (dispatch) {
+
+    var token = cookies.get('token');
+
+    if(!token)
+    {
+        //dispatch(ActionUser.UpdateUser(null));
+        return
+    }
+    var decoded = jwt_decode(token);
+
+    let user = {
+
+        address: decoded.data.address,
+    };
+    let urlApi = Config.url_admin + "transaction";
+
+    axios.defaults.headers.common['x-access-token'] = token;
+
+    axios.get(urlApi).then(res => {
+        if(res.data.success === true){
+            var tmp = res.data.transactions
+            console.log(tmp)
+            dispatch(ActionUser.UpdateListsandinformationoftransactions(tmp));
+            return
+        }else{
+            return
+        }
+    }).catch((error) => {
+        console.log('error: ' + error);
+    });
+
+
+}
+
+
+
+
 export default {
     updateuser,
-    updatemoneyandtransaction
+    updatemoneyandtransaction,
+    updatestatisticalparameters,
+    updatelistofuseraccounts,
+    updateListsandinformationoftransactions,
 }
