@@ -176,6 +176,7 @@ class Dashboard extends Component{
                 buttonCancel = <Button onClick={() => {
                     this.deleteTransaction(this.state.row._id)
                     this.closePopup()}}>Cancel Transaction</Button>
+        console.log(this.props.transactions)
         return(
             <div className="main">
                 <div className="top-view">
@@ -200,7 +201,7 @@ class Dashboard extends Component{
                                 </div>
                                 <div className="col-md-6">
                                     <div className="title2">
-                                        <p>Real Balance</p>
+                                        <p>Current Balance</p>
                                         <p>$ {this.props.real_balance}</p>
                                     </div>
                                 </div>
@@ -219,6 +220,7 @@ class Dashboard extends Component{
                             pagination>
                             <TableHeaderColumn dataField='created_at' isKey={ true }>Create At</TableHeaderColumn>
                             <TableHeaderColumn dataField='src_address'>Source Address</TableHeaderColumn>
+                            <TableHeaderColumn dataField='dst_address'>Destiny Address</TableHeaderColumn>
                             <TableHeaderColumn dataField='amount'>Amount</TableHeaderColumn>
                             <TableHeaderColumn dataField='status'>Status</TableHeaderColumn>
                         </BootstrapTable>
