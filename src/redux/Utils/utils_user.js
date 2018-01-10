@@ -191,7 +191,38 @@ const  updateListsandinformationoftransactions = function (dispatch) {
 
 }
 
+const updateAddressList = function (dispatch) {
+    var token = cookies.get('token');
 
+    if(!token)
+    {
+        //dispatch(ActionUser.UpdateUser(null));
+        return
+    }
+    var decoded = jwt_decode(token);
+
+    let user = {
+
+        address: decoded.data.address,
+    };
+    let urlApi = Config.url_admin + "address";
+
+    axios.defaults.headers.common['x-access-token'] = token;
+
+    axios.get(urlApi).then(res => {
+        console.log(res.data)
+        if(res.data){
+            var tmp = res.data
+            console.log(tmp)
+            dispatch(ActionUser.UpdateListAddress(tmp));
+            return
+        }else{
+            return
+        }
+    }).catch((error) => {
+        console.log('error: ' + error);
+    });
+}
 
 
 export default {
@@ -200,4 +231,5 @@ export default {
     updatestatisticalparameters,
     updatelistofuseraccounts,
     updateListsandinformationoftransactions,
+    updateAddressList
 }

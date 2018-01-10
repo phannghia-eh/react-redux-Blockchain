@@ -24,12 +24,16 @@ const UpdateListsandinformationoftransactions = (listsandinformationoftransactio
     action: {listsandinformationoftransactions},
 });
 
-
+const UpdateListAddress = (listaddress) => ({
+    type: 'LIST_ADDRESS',
+    action: {listaddress},
+})
 
 export default {
     UpdateUser,
     UpdateMoneyAndTransaction,
     UpdateListofuseraccounts,
     UpdateStatisticalparameters,
-    UpdateListsandinformationoftransactions
+    UpdateListsandinformationoftransactions,
+    UpdateListAddress
 }

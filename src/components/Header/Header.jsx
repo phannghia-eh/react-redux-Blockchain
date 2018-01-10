@@ -12,6 +12,7 @@ class Header extends Component{
         UtilsUser.updatestatisticalparameters(this.props.dispatch)
         UtilsUser.updatelistofuseraccounts(this.props.dispatch)
         UtilsUser.updateListsandinformationoftransactions(this.props.dispatch)
+        UtilsUser.updateAddressList(this.props.dispatch)
     }
 
     logOut() {

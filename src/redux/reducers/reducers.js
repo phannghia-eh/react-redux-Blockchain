@@ -13,7 +13,8 @@ let default_state = {
         totalUser: null,
     },
     listofuseraccounts : [],
-    transactionsadmin :[]
+    transactionsadmin :[],
+    listaddress:[]
 
 };
 
@@ -76,6 +77,16 @@ export default (state = default_state, action) => {
             return {...state,
                 transactionsadmin : transactionsadmin
             };
+
+        case 'LIST_ADDRESS':
+            let listaddress = action.action.listaddress;
+            if(!listaddress){
+                return {...state};
+            }
+            return {...state,
+                listaddress : listaddress
+            };
+
         default:
             return state
     }

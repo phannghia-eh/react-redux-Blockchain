@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import Sidebar from '../../components/Sidebar/Sidebar';
 import '../Listofaddresses/Listofaddresses.css';
-
+import axios from 'axios'
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 class Listofaddresses extends Component{
-
 
     render() {
         if(this.props.user_email){
@@ -17,23 +17,14 @@ class Listofaddresses extends Component{
                             <div className="top-view">
                                 <div className="title1">LIST OF ADDRESSES</div>
                             </div>
-
                             <div>
                                 <div className="maininfouser">
-
-                                    <div class="form-group ">
-                                        <div class="col-sm-12 col-md-6">
-                                            <label class="em-400 type-h5">Wallet ID</label>
-                                            <p class="alt-font f-16 em-300">
-                                                <span>Wallet ID is your unique identifier. It is completely individual to you, and it is what you will use to log in and access your wallet. It is <b>not</b> an address for sending or receiving.</span>
-                                                <span>&nbsp;</span>
-                                                <span >Do not share your Wallet ID with others.</span>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 addressinfouser">
-                                            <label class="em-400 type-h5" >{this.props.address}</label>
-                                        </div>
-                                    </div>
+                                    <BootstrapTable data={this.props.listaddress}>
+                                        <TableHeaderColumn dataField='address' isKey>Address</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='email'>Email</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='actualBalance'>Actual Balance</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='realBalance'>Real Balance</TableHeaderColumn>
+                                    </BootstrapTable>
                                 </div>
                             </div>
                         </div>
