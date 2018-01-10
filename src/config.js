@@ -1,7 +1,7 @@
 let config = {
-    url_auth: 'http://localhost:3000/auth/',
-    url_api:  'http://localhost:3000/api/',
-    url_admin:  'http://localhost:3000/admin/',
+    url_auth: 'https://blockchain-cnm-th2014.herokuapp.com/auth/',
+    url_api:  'https://blockchain-cnm-th2014.herokuapp.com/api/',
+    url_admin:  'https://blockchain-cnm-th2014.herokuapp.com/admin/',
 };
 
 module.exports = config;
